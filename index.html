@@ -1,2187 +1,452 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AquaAgro — Gasto Hídrico no Agronegócio</title>
-  <meta name="description" content="Saiba como o agronegócio utiliza a água, os desafios da gestão hídrica e as melhores práticas para um futuro sustentável no campo." />
-
-  <!-- Acessibilidade: skip link -->
-  <style>
-    /* ============================================================
-       DESIGN SYSTEM — tema natureza/água + brutalismo refinado
-       Paleta: verde profundo, azul glacial, creme, acentos âmbar
-    ============================================================ */
-    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap');
-
-    :root {
-      --clr-bg:        #0b1a10;
-      --clr-surface:   #111e15;
-      --clr-card:      #162119;
-      --clr-border:    #2a4030;
-      --clr-primary:   #4ec97a;
-      --clr-accent:    #70d9f9;
-      --clr-amber:     #f5c842;
-      --clr-text:      #d8efe0;
-      --clr-muted:     #7aad8d;
-      --clr-hero-txt:  #f0faf4;
-      --font-display:  'Fraunces', Georgia, serif;
-      --font-body:     'DM Sans', system-ui, sans-serif;
-      --radius:        16px;
-      --transition:    0.35s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    /* ── Skip link ── */
-    .skip-link {
-      position: absolute;
-      top: -100%;
-      left: 1rem;
-      z-index: 9999;
-      background: var(--clr-primary);
-      color: #000;
-      padding: .6rem 1.2rem;
-      border-radius: 0 0 var(--radius) var(--radius);
-      font-family: var(--font-body);
-      font-weight: 500;
-      text-decoration: none;
-      transition: top .2s;
-    }
-    .skip-link:focus { top: 0; }
-
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: clamp(15px, 1.1vw, 17px);
-    }
-
-    body {
-      font-family: var(--font-body);
-      background: var(--clr-bg);
-      color: var(--clr-text);
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-
-    /* ── Acessibilidade: foco visível ── */
-    :focus-visible {
-      outline: 3px solid var(--clr-primary);
-      outline-offset: 4px;
-      border-radius: 4px;
-    }
-
-    img { max-width: 100%; display: block; }
-    a { color: var(--clr-primary); }
-
-    /* ============================================================
-       NAVBAR
-    ============================================================ */
-    .navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      background: rgba(11,26,16,.85);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--clr-border);
-    }
-
-    .navbar__logo {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--clr-primary);
-      text-decoration: none;
-      letter-spacing: -.02em;
-    }
-
-    .navbar__logo span { color: var(--clr-accent); }
-
-    .navbar__nav {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .navbar__nav a {
-      font-size: .9rem;
-      font-weight: 500;
-      color: var(--clr-muted);
-      text-decoration: none;
-      transition: color var(--transition);
-      letter-spacing: .02em;
-    }
-    .navbar__nav a:hover { color: var(--clr-text); }
-
-    .navbar__a11y {
-      display: flex;
-      gap: .5rem;
-    }
-
-    .btn-a11y {
-      background: var(--clr-card);
-      border: 1px solid var(--clr-border);
-      color: var(--clr-text);
-      border-radius: 8px;
-      padding: .4rem .75rem;
-      font-size: .8rem;
-      cursor: pointer;
-      transition: background var(--transition), border-color var(--transition);
-      font-family: var(--font-body);
-    }
-    .btn-a11y:hover { background: var(--clr-border); border-color: var(--clr-muted); }
-
-    /* Hamburger */
-    .nav-toggle {
-      display: none;
-      background: none;
-      border: 2px solid var(--clr-border);
-      color: var(--clr-text);
-      border-radius: 8px;
-      padding: .4rem .7rem;
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-
-    /* ============================================================
-       HERO
-    ============================================================ */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-      padding: 8rem 1.5rem 4rem;
-    }
-
-    /* animated blob background */
-    .hero__bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 20% 40%, #0d4a2040 0%, transparent 60%),
-                  radial-gradient(ellipse 60% 80% at 80% 60%, #0a3a6040 0%, transparent 60%),
-                  var(--clr-bg);
-    }
-
-    .hero__blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: .35;
-      animation: blobFloat 8s ease-in-out infinite;
-    }
-    .hero__blob--1 { width: 500px; height: 500px; background: #1a5e30; top: -100px; left: -150px; animation-delay: 0s; }
-    .hero__blob--2 { width: 350px; height: 350px; background: #0a3060; bottom: -80px; right: -80px; animation-delay: -3s; }
-    .hero__blob--3 { width: 250px; height: 250px; background: #2e7d52; top: 50%; right: 15%; animation-delay: -5s; }
-
-    @keyframes blobFloat {
-      0%,100% { transform: translate(0,0) scale(1); }
-      33% { transform: translate(30px,-20px) scale(1.05); }
-      66% { transform: translate(-20px,15px) scale(.95); }
-    }
-
-    /* water wave svg */
-    .hero__wave {
-      position: absolute;
-      bottom: -2px; left: 0; right: 0;
-      height: 80px;
-      overflow: hidden;
-    }
-    .hero__wave svg { width: 100%; height: 100%; }
-
-    .hero__content {
-      position: relative;
-      z-index: 2;
-      max-width: 860px;
-    }
-
-    .hero__eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      background: rgba(78,201,122,.12);
-      border: 1px solid rgba(78,201,122,.3);
-      color: var(--clr-primary);
-      border-radius: 999px;
-      padding: .35rem 1rem;
-      font-size: .85rem;
-      font-weight: 500;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      animation: fadeUp .8s ease both;
-    }
-
-    .hero__title {
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 8vw, 6.5rem);
-      font-weight: 900;
-      line-height: 1.0;
-      color: var(--clr-hero-txt);
-      letter-spacing: -.03em;
-      animation: fadeUp .8s .15s ease both;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero__title em {
-      font-style: italic;
-      color: var(--clr-primary);
-    }
-
-    .hero__title .accent-word {
-      color: var(--clr-accent);
-    }
-
-    .hero__subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      color: var(--clr-muted);
-      max-width: 620px;
-      margin: 0 auto 2.5rem;
-      animation: fadeUp .8s .3s ease both;
-    }
-
-    .hero__cta {
-      display: inline-flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: fadeUp .8s .45s ease both;
-    }
-
-    .btn-primary {
-      background: var(--clr-primary);
-      color: #0b1a10;
-      padding: .85rem 2rem;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 1rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      transition: transform var(--transition), box-shadow var(--transition);
-      border: none;
-      cursor: pointer;
-      font-family: var(--font-body);
-    }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(78,201,122,.4); }
-
-    .btn-ghost {
-      border: 1.5px solid var(--clr-border);
-      color: var(--clr-text);
-      padding: .85rem 2rem;
-      border-radius: 999px;
-      font-weight: 500;
-      font-size: 1rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      transition: border-color var(--transition), color var(--transition);
-      background: transparent;
-      cursor: pointer;
-      font-family: var(--font-body);
-    }
-    .btn-ghost:hover { border-color: var(--clr-muted); color: var(--clr-primary); }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* hero stat strip */
-    .hero__stats {
-      position: absolute;
-      bottom: 5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 3rem;
-      z-index: 3;
-      animation: fadeUp .8s .6s ease both;
-    }
-
-    .hero__stat {
-      text-align: center;
-    }
-
-    .hero__stat-num {
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--clr-accent);
-      line-height: 1;
-    }
-
-    .hero__stat-label {
-      font-size: .75rem;
-      color: var(--clr-muted);
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-
-    /* ============================================================
-       SECTION BASE
-    ============================================================ */
-    section { padding: 5rem 1.5rem; }
-
-    .section-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      color: var(--clr-primary);
-      font-size: .8rem;
-      font-weight: 500;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    .section-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 24px;
-      height: 2px;
-      background: var(--clr-primary);
-      border-radius: 2px;
-    }
-
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.9rem, 4vw, 3rem);
-      font-weight: 700;
-      line-height: 1.15;
-      color: var(--clr-hero-txt);
-      letter-spacing: -.02em;
-      margin-bottom: 1rem;
-    }
-
-    .section-lead {
-      font-size: 1.05rem;
-      color: var(--clr-muted);
-      max-width: 700px;
-    }
-
-    .section-head { margin-bottom: 3.5rem; }
-
-    /* ============================================================
-       DADOS / NÚMEROS  (#dados)
-    ============================================================ */
-    #dados { background: var(--clr-surface); }
-
-    .dados-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .dado-card {
-      background: var(--clr-card);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .dado-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, transparent 60%, rgba(78,201,122,.06));
-      pointer-events: none;
-    }
-
-    .dado-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--clr-muted);
-      box-shadow: 0 20px 60px rgba(0,0,0,.4);
-    }
-
-    .dado-card__icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      display: block;
-      line-height: 1;
-    }
-
-    .dado-card__num {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--clr-primary);
-      line-height: 1;
-      letter-spacing: -.04em;
-    }
-
-    .dado-card__unit {
-      font-size: 1.2rem;
-      color: var(--clr-muted);
-      font-family: var(--font-display);
-    }
-
-    .dado-card__label {
-      margin-top: .5rem;
-      font-size: .9rem;
-      color: var(--clr-muted);
-    }
-
-    .dado-card__desc {
-      margin-top: .75rem;
-      font-size: .8rem;
-      color: #5a8c6e;
-      line-height: 1.5;
-    }
-
-    /* ============================================================
-       PRINCIPAIS CULTURAS  (#culturas)
-    ============================================================ */
-    #culturas { background: var(--clr-bg); }
-
-    .culturas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .cultura-card {
-      background: var(--clr-card);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-
-    .cultura-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 24px 60px rgba(0,0,0,.5);
-    }
-
-    .cultura-card__header {
-      padding: 1.75rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      border-bottom: 1px solid var(--clr-border);
-    }
-
-    .cultura-card__emoji {
-      font-size: 2.5rem;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-
-    .cultura-card__name {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--clr-hero-txt);
-    }
-
-    .cultura-card__body { padding: 1.5rem; }
-
-    .water-meter {
-      margin-bottom: 1.25rem;
-    }
-
-    .water-meter__label {
-      display: flex;
-      justify-content: space-between;
-      font-size: .82rem;
-      color: var(--clr-muted);
-      margin-bottom: .5rem;
-    }
-
-    .water-meter__value {
-      font-weight: 700;
-      color: var(--clr-accent);
-    }
-
-    .water-meter__bar {
-      height: 8px;
-      border-radius: 999px;
-      background: var(--clr-border);
-      overflow: hidden;
-    }
-
-    .water-meter__fill {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--clr-primary), var(--clr-accent));
-      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    .cultura-card__facts {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: .5rem;
-    }
-
-    .cultura-card__facts li {
-      font-size: .85rem;
-      color: var(--clr-muted);
-      display: flex;
-      gap: .5rem;
-      align-items: flex-start;
-    }
-
-    .cultura-card__facts li::before {
-      content: '→';
-      color: var(--clr-primary);
-      flex-shrink: 0;
-    }
-
-    /* ============================================================
-       IMPACTOS  (#impactos)
-    ============================================================ */
-    #impactos { background: var(--clr-surface); }
-
-    .impactos-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-
-    .impacto-card {
-      background: var(--clr-card);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      display: flex;
-      gap: 1.25rem;
-      align-items: flex-start;
-    }
-
-    .impacto-card__icon-wrap {
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.7rem;
-      flex-shrink: 0;
-    }
-
-    .impacto-card__icon-wrap.red  { background: rgba(239,68,68,.12); }
-    .impacto-card__icon-wrap.amber { background: rgba(245,200,66,.12); }
-    .impacto-card__icon-wrap.blue { background: rgba(112,217,249,.12); }
-    .impacto-card__icon-wrap.green { background: rgba(78,201,122,.12); }
-
-    .impacto-card__title {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--clr-hero-txt);
-      margin-bottom: .5rem;
-    }
-
-    .impacto-card__text {
-      font-size: .88rem;
-      color: var(--clr-muted);
-      line-height: 1.65;
-    }
-
-    /* ============================================================
-       INFOGRAFICO — fluxo de água
-    ============================================================ */
-    #fluxo { background: var(--clr-bg); }
-
-    .fluxo-diagram {
-      background: var(--clr-card);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius);
-      padding: 3rem 2rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    /* ============================================================
-       SOLUÇÕES  (#solucoes)
-    ============================================================ */
-    #solucoes { background: var(--clr-surface); }
-
-    .solucoes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .solucao-card {
-      background: var(--clr-card);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-    }
-
-    .solucao-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--clr-primary);
-      box-shadow: 0 0 0 1px rgba(78,201,122,.15), 0 20px 50px rgba(0,0,0,.4);
-    }
-
-    .solucao-card__num {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      font-weight: 900;
-      color: rgba(78,201,122,.18);
-      line-height: 1;
-      margin-bottom: .5rem;
-    }
-
-    .solucao-card__title {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--clr-hero-txt);
-      margin-bottom: .75rem;
-    }
-
-    .solucao-card__text {
-      font-size: .88rem;
-      color: var(--clr-muted);
-      line-height: 1.65;
-    }
-
-    .solucao-card__tag {
-      display: inline-block;
-      margin-top: 1rem;
-      background: rgba(78,201,122,.1);
-      border: 1px solid rgba(78,201,122,.25);
-      color: var(--clr-primary);
-      border-radius: 999px;
-      padding: .2rem .75rem;
-      font-size: .75rem;
-      font-weight: 500;
-      letter-spacing: .04em;
-    }
-
-    /* ============================================================
-       LINHA DO TEMPO  (#historico)
-    ============================================================ */
-    #historico { background: var(--clr-bg); }
-
-    .timeline {
-      position: relative;
-      padding-left: 3rem;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 1rem;
-      top: 0; bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--clr-primary), var(--clr-accent));
-      border-radius: 2px;
-    }
-
-    .tl-item {
-      position: relative;
-      margin-bottom: 3rem;
-    }
-
-    .tl-item::before {
-      content: '';
-      position: absolute;
-      left: -2.5rem;
-      top: .3rem;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--clr-primary);
-      border: 3px solid var(--clr-bg);
-      box-shadow: 0 0 0 3px rgba(78,201,122,.3);
-    }
-
-    .tl-year {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--clr-accent);
-      margin-bottom: .25rem;
-    }
-
-    .tl-title {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--clr-hero-txt);
-      margin-bottom: .5rem;
-    }
-
-    .tl-text {
-      font-size: .9rem;
-      color: var(--clr-muted);
-      line-height: 1.65;
-      max-width: 600px;
-    }
-
-    /* ============================================================
-       QUIZ INTERATIVO  (#quiz)
-    ============================================================ */
-    #quiz { background: var(--clr-surface); }
-
-    .quiz-box {
-      background: var(--clr-card);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius);
-      padding: 3rem;
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .quiz-progress {
-      display: flex;
-      gap: .5rem;
-      margin-bottom: 2rem;
-    }
-
-    .quiz-pip {
-      flex: 1;
-      height: 4px;
-      border-radius: 999px;
-      background: var(--clr-border);
-      transition: background .4s;
-    }
-    .quiz-pip.done { background: var(--clr-primary); }
-    .quiz-pip.current { background: var(--clr-accent); }
-
-    .quiz-q {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--clr-hero-txt);
-      margin-bottom: 1.75rem;
-      line-height: 1.3;
-    }
-
-    .quiz-options {
-      display: flex;
-      flex-direction: column;
-      gap: .75rem;
-      margin-bottom: 1.75rem;
-    }
-
-    .quiz-opt {
-      background: var(--clr-surface);
-      border: 1.5px solid var(--clr-border);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      text-align: left;
-      cursor: pointer;
-      font-size: .95rem;
-      color: var(--clr-text);
-      transition: border-color .2s, background .2s, color .2s;
-      font-family: var(--font-body);
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-    }
-
-    .quiz-opt:hover { border-color: var(--clr-muted); background: rgba(255,255,255,.04); }
-    .quiz-opt.selected-correct { border-color: var(--clr-primary); background: rgba(78,201,122,.1); color: var(--clr-primary); }
-    .quiz-opt.selected-wrong { border-color: #ef4444; background: rgba(239,68,68,.08); color: #ef4444; }
-    .quiz-opt.reveal-correct { border-color: var(--clr-primary); background: rgba(78,201,122,.06); }
-    .quiz-opt:disabled { cursor: default; }
-
-    .quiz-letter {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      background: var(--clr-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: .8rem;
-      flex-shrink: 0;
-    }
-
-    .quiz-feedback {
-      min-height: 3rem;
-      font-size: .9rem;
-      color: var(--clr-muted);
-      padding: 1rem;
-      background: rgba(255,255,255,.03);
-      border-radius: 8px;
-      border: 1px solid var(--clr-border);
-      display: none;
-    }
-
-    .quiz-feedback.show { display: block; }
-
-    .quiz-score {
-      text-align: center;
-      display: none;
-    }
-
-    .quiz-score.show { display: block; }
-
-    .quiz-score__num {
-      font-family: var(--font-display);
-      font-size: 5rem;
-      font-weight: 900;
-      color: var(--clr-primary);
-      line-height: 1;
-    }
-
-    .quiz-score__label {
-      font-size: 1rem;
-      color: var(--clr-muted);
-      margin-bottom: 1.5rem;
-    }
-
-    /* ============================================================
-       GLOBO / MAPA section
-    ============================================================ */
-    #brasil { background: var(--clr-bg); }
-
-    .brasil-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .brasil-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .brasil-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-
-    .brasil-badge {
-      flex-shrink: 0;
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: rgba(78,201,122,.12);
-      border: 1px solid rgba(78,201,122,.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-    }
-
-    .brasil-item-title {
-      font-weight: 700;
-      color: var(--clr-hero-txt);
-      font-size: .95rem;
-      margin-bottom: .2rem;
-    }
-
-    .brasil-item-text {
-      font-size: .85rem;
-      color: var(--clr-muted);
-    }
-
-    /* visual water drop SVG panel */
-    .water-visual {
-      position: relative;
-    }
-
-    /* ============================================================
-       CTA FINAL
-    ============================================================ */
-    #cta {
-      background: linear-gradient(135deg, #0d3320, #0a2a50 60%, #0d3320);
-      text-align: center;
-    }
-
-    .cta-inner { max-width: 660px; margin: 0 auto; }
-
-    .cta-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem,4vw,3.2rem);
-      font-weight: 900;
-      color: var(--clr-hero-txt);
-      letter-spacing: -.02em;
-      margin-bottom: 1rem;
-    }
-
-    .cta-text {
-      color: var(--clr-muted);
-      margin-bottom: 2rem;
-      font-size: 1.05rem;
-    }
-
-    /* ============================================================
-       FOOTER
-    ============================================================ */
-    footer {
-      background: var(--clr-surface);
-      border-top: 1px solid var(--clr-border);
-      padding: 3rem 1.5rem;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 2.5rem;
-    }
-
-    .footer-brand p {
-      font-size: .88rem;
-      color: var(--clr-muted);
-      margin-top: .75rem;
-      line-height: 1.6;
-      max-width: 260px;
-    }
-
-    .footer-col h3 {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--clr-hero-txt);
-      margin-bottom: 1rem;
-    }
-
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
-
-    .footer-col ul a {
-      font-size: .85rem;
-      color: var(--clr-muted);
-      text-decoration: none;
-      transition: color var(--transition);
-    }
-    .footer-col ul a:hover { color: var(--clr-primary); }
-
-    .footer-bottom {
-      max-width: 1200px;
-      margin: 2rem auto 0;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--clr-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: .8rem;
-      color: #4a7a5a;
-      flex-wrap: wrap;
-      gap: .5rem;
-    }
-
-    /* ============================================================
-       ACESSIBILIDADE EXTRA
-    ============================================================ */
-    /* Alto contraste */
-    body.high-contrast {
-      --clr-bg: #000;
-      --clr-surface: #0a0a0a;
-      --clr-card: #111;
-      --clr-border: #444;
-      --clr-primary: #00ff88;
-      --clr-accent: #00ccff;
-      --clr-text: #fff;
-      --clr-muted: #bbb;
-    }
-
-    /* Fonte maior */
-    body.font-large { font-size: 20px; }
-    body.font-xlarge { font-size: 24px; }
-
-    /* Sem animações */
-    body.reduce-motion * {
-      animation: none !important;
-      transition: none !important;
-    }
-
-    /* ============================================================
-       RESPONSIVO
-    ============================================================ */
-    @media (max-width: 900px) {
-      .navbar__nav { display: none; }
-      .navbar__nav.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--clr-surface); border-bottom: 1px solid var(--clr-border); padding: 1rem 2rem; }
-      .nav-toggle { display: block; }
-      .impactos-grid, .brasil-grid { grid-template-columns: 1fr; }
-      .footer-inner { grid-template-columns: 1fr 1fr; }
-      .hero__stats { position: static; transform: none; flex-wrap: wrap; justify-content: center; margin-top: 2rem; gap: 1.5rem; }
-    }
-
-    @media (max-width: 600px) {
-      .footer-inner { grid-template-columns: 1fr; }
-      .hero__stats { gap: 1rem; }
-    }
-
-    /* ── Scroll reveal ── */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-d1 { transition-delay: .1s; }
-    .reveal-d2 { transition-delay: .2s; }
-    .reveal-d3 { transition-delay: .3s; }
-    .reveal-d4 { transition-delay: .4s; }
-    .reveal-d5 { transition-delay: .5s; }
-
-    /* ── Active nav indicator ── */
-    .navbar__nav a.active { color: var(--clr-primary); }
-
-    /* ── Visual focus ring for cards ── */
-    .dado-card:focus-within,
-    .cultura-card:focus-within,
-    .solucao-card:focus-within { outline: 2px solid var(--clr-primary); outline-offset: 2px; }
-
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <!-- ══ Skip navigation ══ -->
-  <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
 
-  <!-- ══ Navbar ══ -->
-  <header role="banner">
-    <nav class="navbar" role="navigation" aria-label="Navegação principal">
-      <a href="#hero" class="navbar__logo" aria-label="AquaAgro — página inicial">Aqua<span>Agro</span></a>
-
-      <ul class="navbar__nav" id="main-nav" role="list">
-        <li><a href="#dados">Dados</a></li>
-        <li><a href="#culturas">Culturas</a></li>
-        <li><a href="#impactos">Impactos</a></li>
-        <li><a href="#solucoes">Soluções</a></li>
-        <li><a href="#quiz">Quiz</a></li>
-        <li><a href="#brasil">Brasil</a></li>
-      </ul>
-
-      <!-- Acessibilidade tools -->
-      <div class="navbar__a11y" role="group" aria-label="Ferramentas de acessibilidade">
-        <button class="btn-a11y" onclick="toggleContrast()" aria-pressed="false" id="btn-contrast" title="Alternar alto contraste">🔆 Contraste</button>
-        <button class="btn-a11y" onclick="increaseFontSize()" aria-label="Aumentar tamanho da fonte">A+</button>
-        <button class="btn-a11y" onclick="resetFontSize()" aria-label="Restaurar tamanho da fonte">A</button>
-        <button class="btn-a11y" onclick="toggleMotion()" aria-pressed="false" id="btn-motion" title="Reduzir animações">🎥</button>
-      </div>
-
-      <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Menu" onclick="toggleNav(this)">☰</button>
-    </nav>
-  </header>
-
-  <!-- ══ HERO ══ -->
-  <main id="conteudo-principal">
-    <section id="hero" class="hero" aria-label="Seção de destaque">
-      <div class="hero__bg" aria-hidden="true">
-        <div class="hero__blob hero__blob--1"></div>
-        <div class="hero__blob hero__blob--2"></div>
-        <div class="hero__blob hero__blob--3"></div>
-      </div>
-
-      <div class="hero__content">
-        <div class="hero__eyebrow" aria-label="Categoria: Recurso hídrico e sustentabilidade">
-          💧 Recurso Hídrico &amp; Sustentabilidade
-        </div>
-
-        <h1 class="hero__title">
-          A <em>água</em> que alimenta<br>
-          o <span class="accent-word">Brasil</span>
-        </h1>
-
-        <p class="hero__subtitle">
-          O agronegócio brasileiro consome 72% de toda a água doce utilizada no país.
-          Entenda os dados, os desafios e as soluções para um campo mais sustentável.
-        </p>
-
-        <div class="hero__cta">
-          <a href="#dados" class="btn-primary" aria-label="Ver dados e estatísticas">
-            📊 Ver Dados
-          </a>
-          <a href="#solucoes" class="btn-ghost" aria-label="Explorar soluções sustentáveis">
-            🌱 Soluções Sustentáveis
-          </a>
-        </div>
-      </div>
-
-      <div class="hero__stats" role="region" aria-label="Estatísticas principais">
-        <div class="hero__stat">
-          <div class="hero__stat-num" aria-label="72 por cento">72%</div>
-          <div class="hero__stat-label">uso agro/total</div>
-        </div>
-        <div class="hero__stat">
-          <div class="hero__stat-num" aria-label="1 trilhão 800 bilhões">1,8 tri</div>
-          <div class="hero__stat-label">m³ captados/ano</div>
-        </div>
-        <div class="hero__stat">
-          <div class="hero__stat-num" aria-label="10 bilhões">10 bi</div>
-          <div class="hero__stat-label">litros/dia irrigados</div>
-        </div>
-      </div>
-
-      <div class="hero__wave" aria-hidden="true">
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#111e15"/>
+  <!-- ═══════════ NAVBAR ═══════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <svg class="logo-drop" viewBox="0 0 26 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 2C13 2, 2 15, 2 20.5C2 26.3 7 31 13 31C19 31 24 26.3 24 20.5C24 15, 13 2, 13 2Z"
+                fill="url(#dg1)"/>
+          <defs>
+            <linearGradient id="dg1" x1="2" y1="2" x2="24" y2="31" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#38D9BE"/>
+              <stop offset="100%" stop-color="#1B7A6E"/>
+            </linearGradient>
+          </defs>
         </svg>
-      </div>
-    </section>
+        <span>AquaAgro</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#contexto">Contexto</a></li>
+        <li><a href="#culturas">Culturas</a></li>
+        <li><a href="#irrigacao">Irrigação</a></li>
+        <li><a href="#impacto">Impacto</a></li>
+        <li><a href="#solucoes">Soluções</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-    <!-- ══ DADOS ══ -->
-    <section id="dados" aria-labelledby="dados-title">
-      <div class="section-inner">
-        <header class="section-head">
-          <div class="section-eyebrow">Panorama Nacional</div>
-          <h2 class="section-title" id="dados-title">Números que revelam a realidade</h2>
-          <p class="section-lead">
-            O Brasil é uma potência hídrica e agrícola, mas o equilíbrio entre produção e conservação da água é um desafio crescente.
-          </p>
-        </header>
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="rpl rpl-a"></div>
+      <div class="rpl rpl-b"></div>
+      <div class="rpl rpl-c"></div>
+    </div>
+    <div class="hero-drop-shape" aria-hidden="true"></div>
 
-        <div class="dados-grid" role="list">
-          <article class="dado-card reveal reveal-d1" role="listitem" tabindex="0" aria-label="Brasil detém 12% da água doce do planeta">
-            <span class="dado-card__icon" aria-hidden="true">🌎</span>
-            <div class="dado-card__num">12<span class="dado-card__unit">%</span></div>
-            <div class="dado-card__label">da água doce superficial do planeta</div>
-            <p class="dado-card__desc">O Brasil possui a maior reserva de água doce superficial do mundo, abrigando o Aquífero Guarani e a Bacia Amazônica.</p>
-          </article>
-
-          <article class="dado-card reveal reveal-d2" role="listitem" tabindex="0" aria-label="Agronegócio consome 72% da água utilizada">
-            <span class="dado-card__icon" aria-hidden="true">🌾</span>
-            <div class="dado-card__num">72<span class="dado-card__unit">%</span></div>
-            <div class="dado-card__label">consumo do agronegócio sobre o total</div>
-            <p class="dado-card__desc">Quase três quartos de toda a água captada no Brasil vão para o setor agropecuário, especialmente na irrigação.</p>
-          </article>
-
-          <article class="dado-card reveal reveal-d3" role="listitem" tabindex="0" aria-label="8,7 milhões de hectares irrigados">
-            <span class="dado-card__icon" aria-hidden="true">💧</span>
-            <div class="dado-card__num">8,7<span class="dado-card__unit">M ha</span></div>
-            <div class="dado-card__label">de área irrigada no Brasil</div>
-            <p class="dado-card__desc">A área irrigada brasileira cresce 3% ao ano e representa 16% da produção de alimentos do país, gerando maior segurança alimentar.</p>
-          </article>
-
-          <article class="dado-card reveal reveal-d4" role="listitem" tabindex="0" aria-label="40% de perda por ineficiência na irrigação">
-            <span class="dado-card__icon" aria-hidden="true">⚠️</span>
-            <div class="dado-card__num">40<span class="dado-card__unit">%</span></div>
-            <div class="dado-card__label">perdido por ineficiência na irrigação</div>
-            <p class="dado-card__desc">Sistemas antiquados e manejo inadequado desperdiçam até 40% da água captada, um volume que poderia irrigar 3,5 milhões de hectares adicionais.</p>
-          </article>
-
-          <article class="dado-card reveal reveal-d5" role="listitem" tabindex="0" aria-label="R$ 580 bilhões no PIB do agronegócio">
-            <span class="dado-card__icon" aria-hidden="true">💰</span>
-            <div class="dado-card__num">R$580<span class="dado-card__unit">bi</span></div>
-            <div class="dado-card__label">PIB do agronegócio em 2024</div>
-            <p class="dado-card__desc">O setor representa 27% do PIB nacional e é o principal gerador de divisas do país, tornando a gestão hídrica estratégica para a economia.</p>
-          </article>
-
-          <article class="dado-card reveal reveal-d1" role="listitem" tabindex="0" aria-label="Potencial de 75 milhões de hectares irrigáveis">
-            <span class="dado-card__icon" aria-hidden="true">🗺️</span>
-            <div class="dado-card__num">75<span class="dado-card__unit">M ha</span></div>
-            <div class="dado-card__label">potencial irrigável no Brasil</div>
-            <p class="dado-card__desc">O Brasil aproveita menos de 12% do seu potencial irrigável, representando enorme margem para crescimento com tecnologia e eficiência hídrica.</p>
-          </article>
+    <div class="wrap hero-wrap">
+      <div class="hero-content">
+        <span class="eyebrow">BRASIL · AGRONEGÓCIO · RECURSOS HÍDRICOS</span>
+        <h1 class="hero-h1">
+          <span class="h1-soft">cada gota que</span>
+          <span class="h1-bold">alimenta o Brasil</span>
+        </h1>
+        <p class="hero-sub">O agronegócio é o maior consumidor de água doce do país. Conheça os números, os impactos e os caminhos para um modelo mais sustentável.</p>
+        <div class="hero-stat">
+          <div class="hs-num">
+            <span id="heroVal">0</span><span class="hs-pct">%</span>
+          </div>
+          <p class="hs-label">da água doce do planeta é consumida pela agricultura global</p>
         </div>
-      </div>
-    </section>
-
-    <!-- ══ CULTURAS ══ -->
-    <section id="culturas" aria-labelledby="culturas-title">
-      <div class="section-inner">
-        <header class="section-head">
-          <div class="section-eyebrow">Consumo por Cultura</div>
-          <h2 class="section-title" id="culturas-title">Quanto cada cultura consome?</h2>
-          <p class="section-lead">
-            O volume de água necessário para produzir 1 tonelada de alimento varia enormemente entre as culturas. A pegada hídrica é essencial para decisões de planejamento.
-          </p>
-        </header>
-
-        <div class="culturas-grid">
-          <article class="cultura-card reveal reveal-d1" tabindex="0">
-            <div class="cultura-card__header">
-              <div class="cultura-card__emoji" aria-hidden="true">🐄</div>
-              <div>
-                <div class="cultura-card__name">Carne Bovina</div>
-                <div style="font-size:.8rem;color:var(--clr-muted);">Maior consumidor hídrico</div>
-              </div>
-            </div>
-            <div class="cultura-card__body">
-              <div class="water-meter" role="meter" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" aria-label="Nível de consumo hídrico: 95 de 100">
-                <div class="water-meter__label">
-                  <span>Pegada Hídrica</span>
-                  <span class="water-meter__value">15.400 L/kg</span>
-                </div>
-                <div class="water-meter__bar"><div class="water-meter__fill" style="width:0%" data-width="95%"></div></div>
-              </div>
-              <ul class="cultura-card__facts">
-                <li>Pastagem: 94% do consumo total</li>
-                <li>Água de bebida do animal: ~50 L/dia</li>
-                <li>Ciclo de 2 a 3 anos até o abate</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="cultura-card reveal reveal-d2" tabindex="0">
-            <div class="cultura-card__header">
-              <div class="cultura-card__emoji" aria-hidden="true">🌱</div>
-              <div>
-                <div class="cultura-card__name">Soja</div>
-                <div style="font-size:.8rem;color:var(--clr-muted);">Principal commodity agrícola</div>
-              </div>
-            </div>
-            <div class="cultura-card__body">
-              <div class="water-meter" role="meter" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" aria-label="Nível de consumo hídrico: 55 de 100">
-                <div class="water-meter__label">
-                  <span>Pegada Hídrica</span>
-                  <span class="water-meter__value">1.822 L/kg</span>
-                </div>
-                <div class="water-meter__bar"><div class="water-meter__fill" style="width:0%" data-width="55%"></div></div>
-              </div>
-              <ul class="cultura-card__facts">
-                <li>Safra 2023/24: 153 milhões de toneladas</li>
-                <li>Pluviosidade de 450–800 mm/ciclo</li>
-                <li>Principal geradora de câmbio nacional</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="cultura-card reveal reveal-d3" tabindex="0">
-            <div class="cultura-card__header">
-              <div class="cultura-card__emoji" aria-hidden="true">🌽</div>
-              <div>
-                <div class="cultura-card__name">Milho</div>
-                <div style="font-size:.8rem;color:var(--clr-muted);">Cereal base da cadeia alimentar</div>
-              </div>
-            </div>
-            <div class="cultura-card__body">
-              <div class="water-meter" role="meter" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" aria-label="Nível de consumo hídrico: 45 de 100">
-                <div class="water-meter__label">
-                  <span>Pegada Hídrica</span>
-                  <span class="water-meter__value">1.222 L/kg</span>
-                </div>
-                <div class="water-meter__bar"><div class="water-meter__fill" style="width:0%" data-width="45%"></div></div>
-              </div>
-              <ul class="cultura-card__facts">
-                <li>Demanda: 500–800 mm de água/ciclo</li>
-                <li>Crítico no pendoamento e enchimento de grãos</li>
-                <li>85% da produção no Centro-Oeste</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="cultura-card reveal reveal-d4" tabindex="0">
-            <div class="cultura-card__header">
-              <div class="cultura-card__emoji" aria-hidden="true">🍚</div>
-              <div>
-                <div class="cultura-card__name">Arroz Irrigado</div>
-                <div style="font-size:.8rem;color:var(--clr-muted);">Alto consumo por inundação</div>
-              </div>
-            </div>
-            <div class="cultura-card__body">
-              <div class="water-meter" role="meter" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="Nível de consumo hídrico: 75 de 100">
-                <div class="water-meter__label">
-                  <span>Pegada Hídrica</span>
-                  <span class="water-meter__value">2.497 L/kg</span>
-                </div>
-                <div class="water-meter__bar"><div class="water-meter__fill" style="width:0%" data-width="75%"></div></div>
-              </div>
-              <ul class="cultura-card__facts">
-                <li>Necessita lâminas d'água permanentes</li>
-                <li>Rio Grande do Sul: 75% da produção nacional</li>
-                <li>Técnicas AWD reduzem consumo em 30%</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="cultura-card reveal reveal-d5" tabindex="0">
-            <div class="cultura-card__header">
-              <div class="cultura-card__emoji" aria-hidden="true">🎋</div>
-              <div>
-                <div class="cultura-card__name">Cana-de-açúcar</div>
-                <div style="font-size:.8rem;color:var(--clr-muted);">Energia e etanol</div>
-              </div>
-            </div>
-            <div class="cultura-card__body">
-              <div class="water-meter" role="meter" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" aria-label="Nível de consumo hídrico: 65 de 100">
-                <div class="water-meter__label">
-                  <span>Pegada Hídrica</span>
-                  <span class="water-meter__value">1.782 L/kg</span>
-                </div>
-                <div class="water-meter__bar"><div class="water-meter__fill" style="width:0%" data-width="65%"></div></div>
-              </div>
-              <ul class="cultura-card__facts">
-                <li>Maior produtor mundial: Brasil</li>
-                <li>Irrigação suplementar eleva produtividade 40%</li>
-                <li>Biossólidos e vinhaça: fertirrigação estratégica</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="cultura-card reveal reveal-d1" tabindex="0">
-            <div class="cultura-card__header">
-              <div class="cultura-card__emoji" aria-hidden="true">🍊</div>
-              <div>
-                <div class="cultura-card__name">Laranja</div>
-                <div style="font-size:.8rem;color:var(--clr-muted);">Fruticultura irrigada</div>
-              </div>
-            </div>
-            <div class="cultura-card__body">
-              <div class="water-meter" role="meter" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="Nível de consumo hídrico: 30 de 100">
-                <div class="water-meter__label">
-                  <span>Pegada Hídrica</span>
-                  <span class="water-meter__value">560 L/kg</span>
-                </div>
-                <div class="water-meter__bar"><div class="water-meter__fill" style="width:0%" data-width="30%"></div></div>
-              </div>
-              <ul class="cultura-card__facts">
-                <li>Irrigação localizada reduz 50% o consumo</li>
-                <li>São Paulo produz 76% do suco global</li>
-                <li>Deficiência hídrica causa queda de frutas</li>
-              </ul>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ IMPACTOS ══ -->
-    <section id="impactos" aria-labelledby="impactos-title">
-      <div class="section-inner">
-        <header class="section-head">
-          <div class="section-eyebrow">Consequências</div>
-          <h2 class="section-title" id="impactos-title">Impactos do uso excessivo</h2>
-          <p class="section-lead">
-            O uso intensivo e muitas vezes ineficiente da água no campo gera consequências que vão do local ao global.
-          </p>
-        </header>
-
-        <div class="impactos-grid">
-          <article class="impacto-card reveal reveal-d1" tabindex="0">
-            <div class="impacto-card__icon-wrap red" aria-hidden="true">🏜️</div>
-            <div>
-              <h3 class="impacto-card__title">Desertificação e Salinização</h3>
-              <p class="impacto-card__text">A irrigação excessiva sem drenagem adequada causa salinização dos solos. No Nordeste, 15% das terras irrigadas já apresentam degradação severa por sal, tornando-as improdutivas.</p>
-            </div>
-          </article>
-
-          <article class="impacto-card reveal reveal-d2" tabindex="0">
-            <div class="impacto-card__icon-wrap blue" aria-hidden="true">🌊</div>
-            <div>
-              <h3 class="impacto-card__title">Redução de Rios e Aquíferos</h3>
-              <p class="impacto-card__text">A captação acima da recarga natural provoca o rebaixamento do nível dos rios e aquíferos. O São Francisco já perdeu 70% da sua vazão em trechos críticos, ameaçando o abastecimento humano.</p>
-            </div>
-          </article>
-
-          <article class="impacto-card reveal reveal-d3" tabindex="0">
-            <div class="impacto-card__icon-wrap amber" aria-hidden="true">🌡️</div>
-            <div>
-              <h3 class="impacto-card__title">Mudanças no Microclima</h3>
-              <p class="impacto-card__text">O desmatamento para expansão agrícola reduz a evapotranspiração, alterando os "rios voadores" amazônicos. Isso afeta diretamente a formação de chuvas em todo o Brasil, gerando secas mais intensas.</p>
-            </div>
-          </article>
-
-          <article class="impacto-card reveal reveal-d4" tabindex="0">
-            <div class="impacto-card__icon-wrap red" aria-hidden="true">🐟</div>
-            <div>
-              <h3 class="impacto-card__title">Perda de Biodiversidade Aquática</h3>
-              <p class="impacto-card__text">O uso de agrotóxicos e fertilizantes na agricultura contamina corpos d'água, causando eutrofização. O Brasil registra perda de 73% das espécies de água doce em áreas de agricultura intensiva.</p>
-            </div>
-          </article>
-
-          <article class="impacto-card reveal reveal-d5" tabindex="0">
-            <div class="impacto-card__icon-wrap amber" aria-hidden="true">👨‍🌾</div>
-            <div>
-              <h3 class="impacto-card__title">Conflitos pelo Uso da Água</h3>
-              <p class="impacto-card__text">Mais de 1.200 conflitos hídricos foram registrados no Brasil entre 2016 e 2022, principalmente em regiões onde a demanda agrícola compete com o abastecimento de cidades e comunidades rurais.</p>
-            </div>
-          </article>
-
-          <article class="impacto-card reveal reveal-d1" tabindex="0">
-            <div class="impacto-card__icon-wrap green" aria-hidden="true">🌍</div>
-            <div>
-              <h3 class="impacto-card__title">Pressão sobre Segurança Hídrica Global</h3>
-              <p class="impacto-card__text">Como celeiro do mundo, as decisões do Brasil no uso da água impactam a disponibilidade de alimentos globalmente. Crises hídricas no campo brasileiro refletem diretamente nos preços internacionais de commodities.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ INFOGRAFICO / FLUXO ══ -->
-    <section id="fluxo" aria-labelledby="fluxo-title">
-      <div class="section-inner">
-        <header class="section-head">
-          <div class="section-eyebrow">Infográfico</div>
-          <h2 class="section-title" id="fluxo-title">O ciclo da água no campo</h2>
-          <p class="section-lead">Visualize como a água percorre do céu ao solo, da planta ao consumidor — e onde ocorrem as maiores perdas.</p>
-        </header>
-
-        <div class="fluxo-diagram reveal" role="img" aria-label="Infográfico do ciclo da água no campo, mostrando captação, irrigação, absorção, evapotranspiração e retorno ao ciclo hídrico">
-          <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto" aria-hidden="true">
-            <defs>
-              <linearGradient id="gWater" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#4ec97a;stop-opacity:1"/>
-                <stop offset="100%" style="stop-color:#70d9f9;stop-opacity:1"/>
-              </linearGradient>
-              <linearGradient id="gCard" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#1e3028;stop-opacity:1"/>
-                <stop offset="100%" style="stop-color:#162119;stop-opacity:1"/>
-              </linearGradient>
-              <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 Z" fill="#4ec97a" opacity=".7"/>
-              </marker>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-
-            <!-- Background -->
-            <rect width="800" height="420" fill="#111e15" rx="16"/>
-
-            <!-- Sky -->
-            <rect x="0" y="0" width="800" height="180" fill="#0a1a28" rx="16"/>
-            <text x="400" y="30" fill="#70d9f9" text-anchor="middle" font-size="13" font-family="DM Sans, sans-serif" opacity=".6" letter-spacing="2">CICLO DA ÁGUA NO AGRONEGÓCIO</text>
-
-            <!-- Clouds -->
-            <g fill="#1a4060" opacity=".6">
-              <ellipse cx="100" cy="70" rx="50" ry="25"/>
-              <ellipse cx="130" cy="60" rx="40" ry="22"/>
-              <ellipse cx="160" cy="70" rx="45" ry="23"/>
-            </g>
-            <g fill="#1a4060" opacity=".5">
-              <ellipse cx="600" cy="80" rx="55" ry="27"/>
-              <ellipse cx="635" cy="68" rx="45" ry="24"/>
-              <ellipse cx="660" cy="80" rx="48" ry="25"/>
-            </g>
-
-            <!-- Rain drops from cloud 1 -->
-            <g fill="#70d9f9" opacity=".7">
-              <ellipse cx="95"  cy="100" rx="2.5" ry="5"/>
-              <ellipse cx="110" cy="108" rx="2.5" ry="5"/>
-              <ellipse cx="125" cy="100" rx="2.5" ry="5"/>
-              <ellipse cx="140" cy="110" rx="2.5" ry="5"/>
-              <ellipse cx="155" cy="102" rx="2.5" ry="5"/>
-            </g>
-
-            <!-- Rain drops from cloud 2 -->
-            <g fill="#70d9f9" opacity=".6">
-              <ellipse cx="595" cy="110" rx="2.5" ry="5"/>
-              <ellipse cx="610" cy="118" rx="2.5" ry="5"/>
-              <ellipse cx="625" cy="110" rx="2.5" ry="5"/>
-              <ellipse cx="640" cy="120" rx="2.5" ry="5"/>
-              <ellipse cx="655" cy="112" rx="2.5" ry="5"/>
-            </g>
-
-            <!-- Ground -->
-            <rect x="0" y="280" width="800" height="140" fill="#0b1a10" rx="0"/>
-            <path d="M0,280 Q200,260 400,280 Q600,300 800,280 L800,420 L0,420 Z" fill="#0d2015"/>
-
-            <!-- Soil strata -->
-            <rect x="0" y="330" width="800" height="40" fill="#0a1a0f" opacity=".5"/>
-            <rect x="0" y="370" width="800" height="50" fill="#071510" opacity=".5"/>
-
-            <!-- River -->
-            <path d="M0,300 Q150,285 300,295 Q450,305 600,295 Q700,290 800,298" fill="none" stroke="url(#gWater)" stroke-width="12" opacity=".3" stroke-linecap="round"/>
-            <path d="M0,300 Q150,285 300,295 Q450,305 600,295 Q700,290 800,298" fill="none" stroke="#70d9f9" stroke-width="3" opacity=".5" stroke-linecap="round"/>
-
-            <!-- Reservoir / Dam -->
-            <rect x="30" y="270" width="70" height="50" fill="#0d3060" rx="6"/>
-            <rect x="30" y="270" width="70" height="5" fill="#70d9f9" opacity=".4" rx="3"/>
-            <text x="65" y="300" fill="#70d9f9" text-anchor="middle" font-size="10" font-family="DM Sans,sans-serif" opacity=".8">Reservatório</text>
-            <!-- Dam wall detail -->
-            <rect x="95" y="270" width="8" height="50" fill="#1a5080" rx="2"/>
-
-            <!-- Irrigation canal -->
-            <path d="M98,295 L200,295 L200,310" fill="none" stroke="#70d9f9" stroke-width="3" opacity=".6" marker-end="url(#arrow)" stroke-dasharray="6,3"/>
-
-            <!-- Sprinkler -->
-            <line x1="200" y1="260" x2="200" y2="280" stroke="#4ec97a" stroke-width="3"/>
-            <path d="M200,260 Q190,240 165,245 Q185,250 200,260 M200,260 Q210,238 235,243 Q215,250 200,260" fill="#4ec97a" opacity=".7"/>
-            <g fill="#70d9f9" opacity=".5">
-              <ellipse cx="175" cy="270" rx="1.5" ry="4"/>
-              <ellipse cx="185" cy="268" rx="1.5" ry="4"/>
-              <ellipse cx="215" cy="268" rx="1.5" ry="4"/>
-              <ellipse cx="225" cy="271" rx="1.5" ry="4"/>
-            </g>
-            <text x="200" y="250" fill="#4ec97a" text-anchor="middle" font-size="10" font-family="DM Sans,sans-serif">Aspersão</text>
-
-            <!-- Drip irrigation -->
-            <line x1="380" y1="260" x2="380" y2="310" stroke="#4ec97a" stroke-width="2" stroke-dasharray="4,3"/>
-            <line x1="395" y1="260" x2="395" y2="310" stroke="#4ec97a" stroke-width="2" stroke-dasharray="4,3"/>
-            <line x1="410" y1="260" x2="410" y2="310" stroke="#4ec97a" stroke-width="2" stroke-dasharray="4,3"/>
-            <text x="395" y="250" fill="#4ec97a" text-anchor="middle" font-size="10" font-family="DM Sans,sans-serif">Gotejamento</text>
-
-            <!-- Crop silhouettes -->
-            <!-- Soy crop -->
-            <g fill="#2a6040" opacity=".8">
-              <line x1="300" y1="320" x2="300" y2="280" stroke="#2a6040" stroke-width="3"/>
-              <ellipse cx="290" cy="290" rx="12" ry="8" transform="rotate(-30 290 290)"/>
-              <ellipse cx="310" cy="292" rx="12" ry="8" transform="rotate(30 310 292)"/>
-              <ellipse cx="300" cy="282" rx="10" ry="7"/>
-              <line x1="320" y1="318" x2="320" y2="282" stroke="#2a6040" stroke-width="3"/>
-              <ellipse cx="310" cy="290" rx="11" ry="7" transform="rotate(-30 310 290)"/>
-              <ellipse cx="330" cy="291" rx="11" ry="7" transform="rotate(25 330 291)"/>
-              <line x1="340" y1="316" x2="340" y2="284" stroke="#2a6040" stroke-width="3"/>
-              <ellipse cx="330" cy="292" rx="10" ry="7" transform="rotate(-25 330 292)"/>
-              <ellipse cx="350" cy="293" rx="10" ry="7" transform="rotate(25 350 293)"/>
-            </g>
-
-            <!-- Corn crop -->
-            <g fill="#3a7040">
-              <line x1="460" y1="325" x2="460" y2="270" stroke="#3a7040" stroke-width="4"/>
-              <path d="M455,300 Q440,290 450,280 Q455,295 460,292" fill="#3a7040"/>
-              <path d="M465,295 Q480,285 470,275 Q465,290 460,290" fill="#3a7040"/>
-              <ellipse cx="460" cy="278" rx="6" ry="10" fill="#4ec97a" opacity=".6"/>
-              <line x1="480" y1="322" x2="480" y2="272" stroke="#3a7040" stroke-width="4"/>
-              <path d="M475,296 Q460,286 470,276 Q475,291 480,288" fill="#3a7040"/>
-              <ellipse cx="480" cy="280" rx="6" ry="10" fill="#4ec97a" opacity=".6"/>
-            </g>
-
-            <!-- Evaporation arrows -->
-            <g stroke="#70d9f9" stroke-width="1.5" fill="none" opacity=".4">
-              <path d="M270,270 Q265,255 272,245" marker-end="url(#arrow)"/>
-              <path d="M285,268 Q280,250 288,238" marker-end="url(#arrow)"/>
-              <path d="M445,268 Q440,252 447,240" marker-end="url(#arrow)"/>
-              <path d="M460,266 Q456,248 462,236" marker-end="url(#arrow)"/>
-            </g>
-            <text x="295" y="235" fill="#70d9f9" text-anchor="middle" font-size="10" font-family="DM Sans,sans-serif" opacity=".7">Evapotranspiração</text>
-
-            <!-- Underground water flow -->
-            <path d="M200,350 Q400,340 600,350" fill="none" stroke="#4ec97a" stroke-width="2" opacity=".3" stroke-dasharray="5,4"/>
-            <text x="400" y="365" fill="#4ec97a" text-anchor="middle" font-size="10" font-family="DM Sans,sans-serif" opacity=".5">Recarga de aquíferos</text>
-
-            <!-- Aquifer symbol -->
-            <g opacity=".35">
-              <ellipse cx="200" cy="385" rx="35" ry="12" fill="#70d9f9"/>
-              <ellipse cx="400" cy="388" rx="45" ry="14" fill="#70d9f9"/>
-              <ellipse cx="600" cy="383" rx="35" ry="12" fill="#70d9f9"/>
-            </g>
-
-            <!-- Return flow arrow -->
-            <path d="M620,295 Q670,230 630,130 Q610,80 640,75" fill="none" stroke="#70d9f9" stroke-width="2" opacity=".3" stroke-dasharray="7,4" marker-end="url(#arrow)"/>
-            <text x="685" y="200" fill="#70d9f9" font-size="10" font-family="DM Sans,sans-serif" opacity=".6">Retorno ao</text>
-            <text x="685" y="215" fill="#70d9f9" font-size="10" font-family="DM Sans,sans-serif" opacity=".6">ciclo hídrico</text>
-
-            <!-- Losses label -->
-            <rect x="520" y="250" width="120" height="30" fill="#2d1010" rx="6" opacity=".8"/>
-            <text x="580" y="269" fill="#ef4444" text-anchor="middle" font-size="11" font-family="DM Sans,sans-serif">⚠ Perda: ~40%</text>
-
-            <!-- Legend -->
-            <g transform="translate(20,390)">
-              <rect width="8" height="8" fill="#4ec97a" rx="2"/>
-              <text x="12" y="8" fill="#7aad8d" font-size="9" font-family="DM Sans,sans-serif">Irrigação</text>
-            </g>
-            <g transform="translate(90,390)">
-              <rect width="8" height="8" fill="#70d9f9" rx="2"/>
-              <text x="12" y="8" fill="#7aad8d" font-size="9" font-family="DM Sans,sans-serif">Ciclo natural</text>
-            </g>
-            <g transform="translate(175,390)">
-              <rect width="8" height="8" fill="#ef4444" rx="2" opacity=".7"/>
-              <text x="12" y="8" fill="#7aad8d" font-size="9" font-family="DM Sans,sans-serif">Perdas</text>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ SOLUÇÕES ══ -->
-    <section id="solucoes" aria-labelledby="solucoes-title">
-      <div class="section-inner">
-        <header class="section-head">
-          <div class="section-eyebrow">Boas Práticas</div>
-          <h2 class="section-title" id="solucoes-title">Soluções para um campo mais eficiente</h2>
-          <p class="section-lead">
-            A tecnologia e o manejo inteligente podem reduzir o consumo de água no agro em até 50% sem perda de produtividade.
-          </p>
-        </header>
-
-        <div class="solucoes-grid">
-          <article class="solucao-card reveal reveal-d1" tabindex="0">
-            <div class="solucao-card__num" aria-hidden="true">01</div>
-            <h3 class="solucao-card__title">Irrigação por Gotejamento</h3>
-            <p class="solucao-card__text">Entrega água diretamente à raiz da planta, eliminando perdas por evaporação e escoamento. Reduz o consumo em até 50% comparado à aspersão convencional, com maior produtividade.</p>
-            <span class="solucao-card__tag">💧 Tecnologia</span>
-          </article>
-
-          <article class="solucao-card reveal reveal-d2" tabindex="0">
-            <div class="solucao-card__num" aria-hidden="true">02</div>
-            <h3 class="solucao-card__title">Agricultura de Precisão</h3>
-            <p class="solucao-card__text">Sensores de umidade do solo, imagens de satélite e algoritmos de IA determinam o momento e a quantidade exata de irrigação, evitando desperdícios e déficits hídricos nas plantas.</p>
-            <span class="solucao-card__tag">🤖 Agritech</span>
-          </article>
-
-          <article class="solucao-card reveal reveal-d3" tabindex="0">
-            <div class="solucao-card__num" aria-hidden="true">03</div>
-            <h3 class="solucao-card__title">Plantio Direto e Cobertura</h3>
-            <p class="solucao-card__text">O plantio direto conserva a estrutura do solo e a cobertura vegetal reduz a evapotranspiração, aumentando a retenção de água no solo em até 40% e diminuindo a necessidade de irrigação.</p>
-            <span class="solucao-card__tag">🌱 Manejo</span>
-          </article>
-
-          <article class="solucao-card reveal reveal-d4" tabindex="0">
-            <div class="solucao-card__num" aria-hidden="true">04</div>
-            <h3 class="solucao-card__title">Reúso de Água</h3>
-            <p class="solucao-card__text">Captação de água da chuva, reúso de efluentes tratados de agroindústrias e aproveitamento da condensação podem suprir até 30% das necessidades hídricas de uma propriedade rural.</p>
-            <span class="solucao-card__tag">♻️ Circularidade</span>
-          </article>
-
-          <article class="solucao-card reveal reveal-d5" tabindex="0">
-            <div class="solucao-card__num" aria-hidden="true">05</div>
-            <h3 class="solucao-card__title">Integração Lavoura-Floresta</h3>
-            <p class="solucao-card__text">Sistemas ILPF aumentam a biodiversidade, favorecem a infiltração de água no solo, reduzem a temperatura e contribuem para os "rios voadores", garantindo maior regularidade de chuvas na região.</p>
-            <span class="solucao-card__tag">🌳 Agroecologia</span>
-          </article>
-
-          <article class="solucao-card reveal reveal-d1" tabindex="0">
-            <div class="solucao-card__num" aria-hidden="true">06</div>
-            <h3 class="solucao-card__title">Outorga e Gestão Participativa</h3>
-            <p class="solucao-card__text">A regularização do uso da água via outorga, associada a comitês de bacia com participação de agricultores, garante uso sustentável e evita conflitos, protegendo tanto a produção quanto os ecossistemas.</p>
-            <span class="solucao-card__tag">📋 Governança</span>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ HISTÓRICO / LINHA DO TEMPO ══ -->
-    <section id="historico" aria-labelledby="historico-title">
-      <div class="section-inner">
-        <header class="section-head">
-          <div class="section-eyebrow">Marco Regulatório</div>
-          <h2 class="section-title" id="historico-title">Linha do tempo da gestão hídrica no Brasil</h2>
-          <p class="section-lead">A evolução das políticas e tecnologias de gestão da água no setor agropecuário.</p>
-        </header>
-
-        <div class="timeline" role="list">
-          <div class="tl-item reveal" role="listitem" tabindex="0">
-            <div class="tl-year">1934</div>
-            <h3 class="tl-title">Código das Águas</h3>
-            <p class="tl-text">Primeiro marco legal para o uso da água no Brasil. Reconhece as águas como bem público e cria as bases para concessões de uso, mas sem previsão de cobrança pelo uso ou de outorga formal.</p>
-          </div>
-
-          <div class="tl-item reveal reveal-d1" role="listitem" tabindex="0">
-            <div class="tl-year">1970</div>
-            <h3 class="tl-title">Expansão da Irrigação e da Revolução Verde</h3>
-            <p class="tl-text">O governo federal investe massivamente em infraestrutura hídrica para irrigação, especialmente no Nordeste (Projeto São Francisco) e no Cerrado. A irrigação por aspersão sem controle de demanda se torna padrão.</p>
-          </div>
-
-          <div class="tl-item reveal reveal-d2" role="listitem" tabindex="0">
-            <div class="tl-year">1988</div>
-            <h3 class="tl-title">Constituição Federal</h3>
-            <p class="tl-text">A Constituição eleva a água à condição de bem essencial ao povo, estabelece a dominialidade pública das águas e abre caminho para a criação de um sistema nacional de gerenciamento de recursos hídricos.</p>
-          </div>
-
-          <div class="tl-item reveal reveal-d3" role="listitem" tabindex="0">
-            <div class="tl-year">1997</div>
-            <h3 class="tl-title">Lei das Águas (Lei 9.433)</h3>
-            <p class="tl-text">Marco revolucionário: institui a Política Nacional de Recursos Hídricos. Define a água como bem de domínio público e recurso limitado, introduz a outorga, a cobrança pelo uso e os Comitês de Bacia Hidrográfica.</p>
-          </div>
-
-          <div class="tl-item reveal reveal-d4" role="listitem" tabindex="0">
-            <div class="tl-year">2003</div>
-            <h3 class="tl-title">ANA — Agência Nacional de Águas</h3>
-            <p class="tl-text">Criação da Agência Nacional de Águas, responsável pela regulação do uso dos recursos hídricos federais, concessão de outorgas e monitoramento dos corpos d'água brasileiros.</p>
-          </div>
-
-          <div class="tl-item reveal reveal-d5" role="listitem" tabindex="0">
-            <div class="tl-year">2010</div>
-            <h3 class="tl-title">Irrigação Inteligente e GPS no Campo</h3>
-            <p class="tl-text">A difusão do GPS agrícola, sensores de umidade e sistemas SCADA (controle supervisório) na irrigação permite gestão mais precisa. Redução média de 25% no consumo de água em propriedades que adotam as tecnologias.</p>
-          </div>
-
-          <div class="tl-item reveal reveal-d1" role="listitem" tabindex="0">
-            <div class="tl-year">2015</div>
-            <h3 class="tl-title">Crise Hídrica e Alerta Nacional</h3>
-            <p class="tl-text">A severa crise hídrica que afetou Sudeste e Nordeste acende o debate sobre a competição entre água para abastecimento urbano e irrigação agrícola. O Cantareira atingiu volumes críticos, catalisando políticas de economia hídrica.</p>
-          </div>
-
-          <div class="tl-item reveal reveal-d2" role="listitem" tabindex="0">
-            <div class="tl-year">2022</div>
-            <h3 class="tl-title">Plano Nacional de Irrigação</h3>
-            <p class="tl-text">O governo lança o Proirriga, meta de expandir a área irrigada para 12 milhões de hectares até 2030, com ênfase em eficiência hídrica, uso de energia solar para bombeamento e tecnologias de precisão.</p>
-          </div>
-
-          <div class="tl-item reveal reveal-d3" role="listitem" tabindex="0">
-            <div class="tl-year">2024+</div>
-            <h3 class="tl-title">IA e Agro 4.0 para Gestão Hídrica</h3>
-            <p class="tl-text">Plataformas de inteligência artificial analisam dados de satélite, climáticos e de solo em tempo real para otimizar irrigação em escala. Startups brasileiras de agritech lideram soluções de rastreamento de pegada hídrica nas cadeias produtivas.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ QUIZ ══ -->
-    <section id="quiz" aria-labelledby="quiz-title">
-      <div class="section-inner">
-        <header class="section-head">
-          <div class="section-eyebrow">Teste seus conhecimentos</div>
-          <h2 class="section-title" id="quiz-title">Quiz: O que você sabe sobre água no agro?</h2>
-          <p class="section-lead">Cinco perguntas para testar o que você aprendeu — e aprender ainda mais!</p>
-        </header>
-
-        <div class="quiz-box" role="form" aria-live="polite" aria-atomic="false">
-          <div class="quiz-progress" role="progressbar" aria-label="Progresso do quiz" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" id="quiz-progress">
-            <div class="quiz-pip current" id="pip-0"></div>
-            <div class="quiz-pip" id="pip-1"></div>
-            <div class="quiz-pip" id="pip-2"></div>
-            <div class="quiz-pip" id="pip-3"></div>
-            <div class="quiz-pip" id="pip-4"></div>
-          </div>
-
-          <div id="quiz-question-area">
-            <p class="quiz-q" id="quiz-q-text" aria-live="polite"></p>
-            <div class="quiz-options" id="quiz-options" role="group" aria-label="Opções de resposta"></div>
-            <div class="quiz-feedback" id="quiz-feedback" role="status" aria-live="polite" aria-atomic="true"></div>
-            <button class="btn-primary" id="quiz-next" onclick="nextQuestion()" style="display:none;margin-top:1.5rem" aria-label="Próxima pergunta">Próxima →</button>
-          </div>
-
-          <div class="quiz-score" id="quiz-score" role="region" aria-label="Resultado do quiz">
-            <div class="quiz-score__num" id="score-num">0</div>
-            <div class="quiz-score__label">de 5 acertos</div>
-            <p id="score-msg" style="color:var(--clr-muted);margin-bottom:1.5rem;font-size:.95rem"></p>
-            <button class="btn-primary" onclick="restartQuiz()">🔄 Jogar novamente</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ BRASIL ══ -->
-    <section id="brasil" aria-labelledby="brasil-title">
-      <div class="section-inner">
-        <header class="section-head">
-          <div class="section-eyebrow">Perspectiva Nacional</div>
-          <h2 class="section-title" id="brasil-title">O Brasil e os recursos hídricos</h2>
-          <p class="section-lead">O Brasil ocupa posição única no mundo — maior reserva de água doce e maior produtor de alimentos. Esse privilégio exige responsabilidade.</p>
-        </header>
-
-        <div class="brasil-grid">
-          <ul class="brasil-list" role="list">
-            <li tabindex="0" role="listitem">
-              <div class="brasil-badge" aria-hidden="true">💧</div>
-              <div>
-                <div class="brasil-item-title">Aquífero Guarani</div>
-                <div class="brasil-item-text">O maior aquífero transfronteiriço do mundo, com 1,2 milhão de km² sob Brasil, Argentina, Paraguai e Uruguai. Abastece cerca de 15 milhões de pessoas e é vital para a agricultura do Sul e Sudeste.</div>
-              </div>
-            </li>
-            <li tabindex="0" role="listitem">
-              <div class="brasil-badge" aria-hidden="true">🌿</div>
-              <div>
-                <div class="brasil-item-title">Rios Voadores Amazônicos</div>
-                <div class="brasil-item-text">A Amazônia gera "rios voadores" — correntes de umidade no ar que levam chuva para o Centro-Sul do Brasil. O desmatamento ameaça esse sistema, reduzindo a precipitação nas principais regiões agrícolas.</div>
-              </div>
-            </li>
-            <li tabindex="0" role="listitem">
-              <div class="brasil-badge" aria-hidden="true">🌊</div>
-              <div>
-                <div class="brasil-item-title">Bacia do São Francisco</div>
-                <div class="brasil-item-text">O "Velho Chico" irriga mais de 300 mil hectares no Nordeste e abastece cidades. Mas a captação agrícola excessiva e as mudanças climáticas reduziram dramaticamente sua vazão nas últimas décadas.</div>
-              </div>
-            </li>
-            <li tabindex="0" role="listitem">
-              <div class="brasil-badge" aria-hidden="true">📡</div>
-              <div>
-                <div class="brasil-item-title">Monitoramento via Satélite</div>
-                <div class="brasil-item-text">O Brasil possui o programa AgroMet e o SEBAL (Surface Energy Balance Algorithm for Land) para estimar evapotranspiração por satélite, permitindo gestão hídrica em escala regional e direcionamento de políticas públicas.</div>
-              </div>
-            </li>
-          </ul>
-
-          <div class="water-visual reveal" aria-label="Visualização: distribuição das bacias hidrográficas brasileiras">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto" role="img" aria-label="Mapa estilizado das regiões hidrográficas do Brasil">
-              <defs>
-                <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" style="stop-color:#162119;stop-opacity:1"/>
-                  <stop offset="100%" style="stop-color:#0b1a10;stop-opacity:1"/>
-                </radialGradient>
-                <radialGradient id="waterGrad" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" style="stop-color:#70d9f9;stop-opacity:.9"/>
-                  <stop offset="100%" style="stop-color:#4ec97a;stop-opacity:.7"/>
-                </radialGradient>
-              </defs>
-
-              <rect width="400" height="400" fill="url(#bgGrad)" rx="16"/>
-
-              <!-- Stylized Brazil shape outline -->
-              <path d="M200,30 L260,45 L310,80 L340,130 L355,190 L340,250 L300,300 L240,340 L200,360 L170,355 L140,340 L100,300 L70,250 L55,190 L70,130 L110,80 L160,45 Z"
-                    fill="none" stroke="#2a4030" stroke-width="1.5"/>
-
-              <!-- Regions -->
-              <!-- Norte / Amazônica -->
-              <path d="M200,30 L260,45 L310,80 L340,130 L300,140 L260,130 L240,110 L220,100 L200,80 L180,90 L160,110 L140,130 L110,130 L80,100 L110,80 L160,45 Z"
-                    fill="#1a5535" opacity=".7"/>
-              <text x="205" y="100" fill="#4ec97a" text-anchor="middle" font-size="11" font-family="DM Sans,sans-serif" font-weight="600">Amazônica</text>
-              <text x="205" y="115" fill="#7aad8d" text-anchor="middle" font-size="9" font-family="DM Sans,sans-serif">73% água doce</text>
-
-              <!-- Nordeste -->
-              <path d="M300,140 L340,130 L355,190 L330,210 L290,200 L270,170 L280,150 Z"
-                    fill="#4a3010" opacity=".7"/>
-              <text x="320" y="180" fill="#f5c842" text-anchor="middle" font-size="9" font-family="DM Sans,sans-serif">Nordeste</text>
-              <text x="320" y="192" fill="#8a7040" text-anchor="middle" font-size="8" font-family="DM Sans,sans-serif">Escassez</text>
-
-              <!-- Centro-Oeste -->
-              <path d="M140,130 L260,130 L270,170 L260,220 L240,250 L180,255 L150,230 L130,200 L125,160 Z"
-                    fill="#1a4a25" opacity=".6"/>
-              <text x="200" y="195" fill="#4ec97a" text-anchor="middle" font-size="10" font-family="DM Sans,sans-serif">Centro-Oeste</text>
-              <text x="200" y="208" fill="#7aad8d" text-anchor="middle" font-size="8" font-family="DM Sans,sans-serif">Cerrado agrícola</text>
-
-              <!-- Sudeste -->
-              <path d="M260,220 L290,200 L330,210 L340,250 L300,300 L240,310 L220,280 L230,250 Z"
-                    fill="#163a20" opacity=".6"/>
-              <text x="285" y="258" fill="#4ec97a" text-anchor="middle" font-size="9" font-family="DM Sans,sans-serif">Sudeste</text>
-
-              <!-- Sul -->
-              <path d="M240,310 L300,300 L280,340 L240,360 L200,360 L180,345 L190,315 Z"
-                    fill="#0f2e18" opacity=".7"/>
-              <text x="240" y="340" fill="#7aad8d" text-anchor="middle" font-size="9" font-family="DM Sans,sans-serif">Sul</text>
-
-              <!-- São Francisco river -->
-              <path d="M155,140 Q170,160 185,180 Q200,200 220,220 Q255,240 280,235" fill="none" stroke="#70d9f9" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
-              <text x="180" y="225" fill="#70d9f9" font-size="8" font-family="DM Sans,sans-serif" transform="rotate(-30 180 225)">Rio São Francisco</text>
-
-              <!-- Amazon river -->
-              <path d="M70,100 Q120,105 160,110 Q200,115 240,108 Q280,102 310,95" fill="none" stroke="#70d9f9" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-              <text x="190" y="97" fill="#70d9f9" text-anchor="middle" font-size="8" font-family="DM Sans,sans-serif">Rio Amazonas</text>
-
-              <!-- Guarani aquifer indicator -->
-              <ellipse cx="210" cy="290" rx="80" ry="35" fill="none" stroke="#70d9f9" stroke-width="1.5" stroke-dasharray="5,4" opacity=".5"/>
-              <text x="210" y="286" fill="#70d9f9" text-anchor="middle" font-size="8.5" font-family="DM Sans,sans-serif" opacity=".8">Aquífero Guarani</text>
-
-              <!-- Water drop icons on regions -->
-              <text x="200" y="78" text-anchor="middle" font-size="14">💧</text>
-              <text x="320" y="165" text-anchor="middle" font-size="12">⚠️</text>
-              <text x="200" y="178" text-anchor="middle" font-size="13">🌱</text>
-
-              <!-- Title -->
-              <text x="200" y="388" fill="#7aad8d" text-anchor="middle" font-size="10" font-family="DM Sans,sans-serif">Regiões Hidrográficas Brasileiras</text>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ CTA ══ -->
-    <section id="cta" aria-labelledby="cta-title">
-      <div class="cta-inner">
-        <h2 class="cta-title" id="cta-title">A água do futuro começa nas<br><em style="font-style:italic;color:var(--clr-primary)">escolhas de hoje</em></h2>
-        <p class="cta-text">
-          O agronegócio brasileiro tem o poder de ser referência mundial em eficiência hídrica. Com tecnologia, políticas adequadas e conscientização, é possível produzir mais alimentos usando menos água.
-        </p>
-        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-          <a href="#solucoes" class="btn-primary" aria-label="Ver todas as soluções de eficiência hídrica">🌱 Ver Soluções</a>
-          <a href="#quiz" class="btn-ghost" aria-label="Fazer o quiz sobre gestão hídrica">🧠 Fazer o Quiz</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ══ FOOTER ══ -->
-  <footer role="contentinfo">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <a href="#hero" class="navbar__logo" aria-label="AquaAgro — voltar ao início">Aqua<span>Agro</span></a>
-        <p>Informação baseada em dados científicos e fontes públicas sobre o gasto hídrico no agronegócio brasileiro. Conteúdo educativo e de conscientização.</p>
-      </div>
-
-      <div class="footer-col">
-        <h3>Navegação</h3>
-        <ul>
-          <li><a href="#dados">Dados & Números</a></li>
-          <li><a href="#culturas">Culturas</a></li>
-          <li><a href="#impactos">Impactos</a></li>
-          <li><a href="#fluxo">Ciclo da Água</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h3>Conteúdo</h3>
-        <ul>
-          <li><a href="#solucoes">Soluções</a></li>
-          <li><a href="#historico">Histórico</a></li>
-          <li><a href="#quiz">Quiz Interativo</a></li>
-          <li><a href="#brasil">Brasil Hídrico</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h3>Fontes</h3>
-        <ul>
-          <li><a href="https://www.ana.gov.br" target="_blank" rel="noopener" aria-label="ANA - Agência Nacional de Águas (abre em nova aba)">ANA</a></li>
-          <li><a href="https://www.embrapa.br" target="_blank" rel="noopener" aria-label="Embrapa (abre em nova aba)">Embrapa</a></li>
-          <li><a href="https://www.ibge.gov.br" target="_blank" rel="noopener" aria-label="IBGE (abre em nova aba)">IBGE</a></li>
-          <li><a href="https://www.fao.org" target="_blank" rel="noopener" aria-label="FAO - Food and Agriculture Organization (abre em nova aba)">FAO</a></li>
-        </ul>
+        <a href="#contexto" class="cta">Explorar os dados <span class="cta-arr">↓</span></a>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <span>© 2025 AquaAgro — Todos os direitos reservados</span>
-      <span>Dados: ANA, Embrapa, IBGE, FAO, Waterfootprint.org</span>
+    <div class="hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 88" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,44 C240,88 480,0 720,44 C960,88 1200,0 1440,44 L1440,88 L0,88 Z" fill="#EBF7F5"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══════════ CONTEXTO ═══════════ -->
+  <section class="sec sec-light" id="contexto">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">PANORAMA NACIONAL</span>
+        <h2>O Brasil e o Recurso Hídrico</h2>
+        <p>Somos privilegiados em reservas de água, mas o agronegócio coloca esse bem cada vez mais sob pressão.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="scard reveal">
+          <span class="scard-ico">💧</span>
+          <div class="scard-num">
+            <span class="cnt" data-to="72">0</span><span class="scard-sym">%</span>
+          </div>
+          <p>de toda a água utilizada no Brasil vai para a irrigação agrícola</p>
+        </div>
+        <div class="scard scard-inv reveal">
+          <span class="scard-ico">🌍</span>
+          <div class="scard-num">
+            <span class="cnt" data-to="12">0</span><span class="scard-sym">%</span>
+          </div>
+          <p>da água doce superficial do mundo está em território brasileiro</p>
+        </div>
+        <div class="scard reveal">
+          <span class="scard-ico">⚠️</span>
+          <div class="scard-num">
+            <span class="cnt" data-to="40">0</span><span class="scard-sym">%</span>
+          </div>
+          <p>das bacias hidrográficas nacionais têm algum grau de estresse hídrico</p>
+        </div>
+      </div>
+
+      <div class="ctx-block reveal">
+        <div class="ctx-text">
+          <h3>Um gigante hídrico sob pressão</h3>
+          <p>O Brasil detém uma das maiores reservas de água doce do mundo — rios Amazonas, São Francisco e Paraná são monumentos de abundância. Mas o crescimento acelerado do agronegócio, que hoje responde por mais de 25% do PIB nacional, transformou a dinâmica de uso da água em regiões críticas como o Cerrado e o Semiárido.</p>
+          <p>A expansão da área irrigada, que cresce cerca de 4% ao ano, aumenta a demanda por outorgas de uso da água e pressiona ecossistemas aquáticos que ainda não se recuperaram de décadas de degradação.</p>
+        </div>
+        <div class="ctx-hl">
+          <div class="hl-card">
+            <div class="hl-val">7,4 <span>mi ha</span></div>
+            <p>de área irrigada no Brasil — a maior da América Latina</p>
+          </div>
+          <div class="hl-card">
+            <div class="hl-val">4 <span>% ao ano</span></div>
+            <p>de crescimento médio na expansão da irrigação nacional</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CULTURAS ═══════════ -->
+  <section class="sec sec-dark" id="culturas">
+    <div class="wrap">
+      <div class="sec-head sec-head-lt reveal">
+        <span class="eyebrow">PEGADA HÍDRICA</span>
+        <h2>Quanto de Água Está no Seu Prato?</h2>
+        <p>Litros de água necessários para produzir 1 kg de cada produto — os números revelam onde a pressão é maior.</p>
+      </div>
+
+      <div class="crops-grid">
+        <div class="crop reveal">
+          <div class="crop-top">
+            <span class="crop-ico">🥩</span>
+            <span class="crop-nm">Carne Bovina</span>
+          </div>
+          <div class="crop-val">15.415 <em>L/kg</em></div>
+          <div class="bar-track"><div class="bar" data-w="100"></div></div>
+        </div>
+        <div class="crop reveal">
+          <div class="crop-top">
+            <span class="crop-ico">🧶</span>
+            <span class="crop-nm">Algodão</span>
+          </div>
+          <div class="crop-val">10.000 <em>L/kg</em></div>
+          <div class="bar-track"><div class="bar" data-w="65"></div></div>
+        </div>
+        <div class="crop reveal">
+          <div class="crop-top">
+            <span class="crop-ico">🌾</span>
+            <span class="crop-nm">Soja</span>
+          </div>
+          <div class="crop-val">2.145 <em>L/kg</em></div>
+          <div class="bar-track"><div class="bar" data-w="22"></div></div>
+        </div>
+        <div class="crop reveal">
+          <div class="crop-top">
+            <span class="crop-ico">🍚</span>
+            <span class="crop-nm">Arroz</span>
+          </div>
+          <div class="crop-val">2.497 <em>L/kg</em></div>
+          <div class="bar-track"><div class="bar" data-w="19"></div></div>
+        </div>
+        <div class="crop reveal">
+          <div class="crop-top">
+            <span class="crop-ico">🎋</span>
+            <span class="crop-nm">Cana-de-Açúcar</span>
+          </div>
+          <div class="crop-val">1.780 <em>L/kg</em></div>
+          <div class="bar-track"><div class="bar" data-w="16"></div></div>
+        </div>
+        <div class="crop reveal">
+          <div class="crop-top">
+            <span class="crop-ico">🌽</span>
+            <span class="crop-nm">Milho</span>
+          </div>
+          <div class="crop-val">1.222 <em>L/kg</em></div>
+          <div class="bar-track"><div class="bar" data-w="8"></div></div>
+        </div>
+      </div>
+      <p class="crops-note">* Fonte: Water Footprint Network — médias ajustadas para condições brasileiras</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ IRRIGAÇÃO ═══════════ -->
+  <section class="sec sec-light" id="irrigacao">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">TÉCNICAS DE IRRIGAÇÃO</span>
+        <h2>Como o Campo Usa Água</h2>
+        <p>A escolha do método de irrigação tem impacto direto na eficiência e no volume de água desperdiçada.</p>
+      </div>
+
+      <div class="irr-grid">
+        <div class="irr reveal">
+          <div class="ring-wrap" data-pct="95">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fg"/>
+            </svg>
+            <span class="ring-val">95%</span>
+          </div>
+          <h3>Gotejamento</h3>
+          <p>Entrega água diretamente na zona radicular, minimizando evaporação e escoamento. Ideal para horticultura e fruticultura intensiva.</p>
+          <span class="badge best">Mais Eficiente</span>
+        </div>
+        <div class="irr reveal">
+          <div class="ring-wrap" data-pct="80">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fg"/>
+            </svg>
+            <span class="ring-val">80%</span>
+          </div>
+          <h3>Pivô Central</h3>
+          <p>Sistema rotativo muito adotado nas lavouras de grãos do Cerrado. Boa eficiência e alto nível de automação disponível.</p>
+          <span class="badge good">Alta Adoção</span>
+        </div>
+        <div class="irr reveal">
+          <div class="ring-wrap" data-pct="75">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fg"/>
+            </svg>
+            <span class="ring-val">75%</span>
+          </div>
+          <h3>Aspersão Convencional</h3>
+          <p>Simula chuva por aspersores. Versátil, mas com perdas por evaporação em dias quentes e ventosos no campo.</p>
+          <span class="badge mid">Moderado</span>
+        </div>
+        <div class="irr reveal">
+          <div class="ring-wrap" data-pct="50">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fg"/>
+            </svg>
+            <span class="ring-val">50%</span>
+          </div>
+          <h3>Irrigação por Inundação</h3>
+          <p>Método mais antigo, ainda dominante no cultivo do arroz. Alto volume de água com baixa eficiência de aproveitamento.</p>
+          <span class="badge low">Menor Eficiência</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ IMPACTO ═══════════ -->
+  <section class="sec sec-accent" id="impacto">
+    <div class="wrap">
+      <div class="sec-head sec-head-lt reveal">
+        <span class="eyebrow">CONSEQUÊNCIAS</span>
+        <h2>As Marcas do Uso Intensivo</h2>
+        <p>O consumo desordenado de água deixa sinais irreversíveis em rios, aquíferos e comunidades rurais.</p>
+      </div>
+      <div class="imp-grid">
+        <div class="imp reveal">
+          <div class="imp-ico">🏞️</div>
+          <h3>Aquífero Guarani Ameaçado</h3>
+          <p>O maior reservatório de água subterrânea do mundo enfrenta superexplotação no Centro-Oeste e Sul, com poços artesianos em queda livre de nível.</p>
+        </div>
+        <div class="imp reveal">
+          <div class="imp-ico">🌵</div>
+          <h3>Semiárido sob Colapso</h3>
+          <p>A expansão agrícola para o Nordeste pressiona rios intermitentes e açudes já tensionados por secas prolongadas, afetando comunidades rurais inteiras.</p>
+        </div>
+        <div class="imp reveal">
+          <div class="imp-ico">🧪</div>
+          <h3>Contaminação por Agrotóxicos</h3>
+          <p>O escoamento superficial leva pesticidas e fertilizantes para cursos d'água, comprometendo a qualidade hídrica de bacias hidrográficas inteiras.</p>
+        </div>
+        <div class="imp reveal">
+          <div class="imp-ico">📋</div>
+          <h3>Conflitos por Outorga</h3>
+          <p>A demanda supera a disponibilidade em bacias críticas como o São Francisco, gerando disputas entre irrigação, abastecimento urbano e geração de energia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SOLUÇÕES ═══════════ -->
+  <section class="sec sec-light" id="solucoes">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">CAMINHOS À FRENTE</span>
+        <h2>Um Agronegócio Mais Inteligente</h2>
+        <p>Tecnologia, políticas públicas e novos modelos de manejo podem transformar a relação entre agricultura e água.</p>
+      </div>
+      <div class="sol-grid">
+        <div class="sol reveal">
+          <div class="sol-num">01</div>
+          <h3>Agricultura de Precisão</h3>
+          <p>Sensores de umidade do solo, drones e inteligência artificial determinam exatamente onde e quanto irrigar — reduzindo o consumo em até 40%.</p>
+        </div>
+        <div class="sol reveal">
+          <div class="sol-num">02</div>
+          <h3>Captação e Reúso</h3>
+          <p>Cisternas, barragens subterrâneas e aproveitamento de água da chuva reduzem a dependência de fontes primárias, especialmente no Semiárido.</p>
+        </div>
+        <div class="sol reveal">
+          <div class="sol-num">03</div>
+          <h3>Plantio Direto e Cobertura</h3>
+          <p>A cobertura permanente do solo retém umidade e reduz evapotranspiração, diminuindo significativamente a necessidade de irrigação suplementar.</p>
+        </div>
+        <div class="sol reveal">
+          <div class="sol-num">04</div>
+          <h3>Monitoramento Digital</h3>
+          <p>Plataformas de gestão hídrica rastreiam o consumo em tempo real, emitem alertas de uso excessivo e geram relatórios de conformidade ambiental.</p>
+        </div>
+        <div class="sol reveal">
+          <div class="sol-num">05</div>
+          <h3>Tratamento de Efluentes</h3>
+          <p>Tratar e reutilizar águas residuais da agroindústria e da pecuária para irrigação pode cobrir parcela significativa da demanda agrícola.</p>
+        </div>
+        <div class="sol reveal">
+          <div class="sol-num">06</div>
+          <h3>Cobrança pelo Uso</h3>
+          <p>A aplicação efetiva da cobrança prevista na Lei das Águas (9.433/1997) cria incentivos econômicos reais para a adoção de práticas eficientes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="footer">
+    <div class="wrap ft-wrap">
+      <div class="ft-brand">
+        <div class="nav-logo" style="margin-bottom:0.8rem;">
+          <svg class="logo-drop" viewBox="0 0 26 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 2C13 2, 2 15, 2 20.5C2 26.3 7 31 13 31C19 31 24 26.3 24 20.5C24 15, 13 2, 13 2Z"
+                  fill="url(#dg2)"/>
+            <defs>
+              <linearGradient id="dg2" x1="2" y1="2" x2="24" y2="31" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#38D9BE"/>
+                <stop offset="100%" stop-color="#1B7A6E"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>AquaAgro</span>
+        </div>
+        <p>Dados e análises sobre o consumo hídrico no agronegócio brasileiro.</p>
+      </div>
+      <div class="ft-nav">
+        <h4>Seções</h4>
+        <ul>
+          <li><a href="#contexto">Contexto</a></li>
+          <li><a href="#culturas">Culturas</a></li>
+          <li><a href="#irrigacao">Irrigação</a></li>
+          <li><a href="#impacto">Impacto</a></li>
+          <li><a href="#solucoes">Soluções</a></li>
+        </ul>
+      </div>
+      <div class="ft-src">
+        <h4>Fontes de Dados</h4>
+        <ul>
+          <li>ANA — Agência Nacional de Águas</li>
+          <li>Water Footprint Network</li>
+          <li>Embrapa Recursos Hídricos</li>
+          <li>IBGE — Censo Agropecuário</li>
+          <li>FAO — Food and Agriculture Org.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p>© 2025 AquaAgro · Educação e dados para um agronegócio mais sustentável</p>
     </div>
   </footer>
 
-  <!-- ============================================================
-       JAVASCRIPT
-  ============================================================ -->
   <script>
-    /* ── Accessibility Controls ── */
-    let fontLevel = 0;
-    const fontSizes = [null, 'font-large', 'font-xlarge'];
-
-    function toggleContrast() {
-      document.body.classList.toggle('high-contrast');
-      const btn = document.getElementById('btn-contrast');
-      const on = document.body.classList.contains('high-contrast');
-      btn.setAttribute('aria-pressed', on);
-      btn.textContent = on ? '🔅 Contraste' : '🔆 Contraste';
-    }
-
-    function increaseFontSize() {
-      document.body.classList.remove(fontSizes[fontLevel] || '');
-      fontLevel = Math.min(fontLevel + 1, 2);
-      if (fontSizes[fontLevel]) document.body.classList.add(fontSizes[fontLevel]);
-    }
-
-    function resetFontSize() {
-      document.body.classList.remove('font-large', 'font-xlarge');
-      fontLevel = 0;
-    }
-
-    function toggleMotion() {
-      document.body.classList.toggle('reduce-motion');
-      const btn = document.getElementById('btn-motion');
-      const on = document.body.classList.contains('reduce-motion');
-      btn.setAttribute('aria-pressed', on);
-      btn.title = on ? 'Animações reduzidas' : 'Reduzir animações';
-    }
-
-    /* ── Nav toggle ── */
-    function toggleNav(btn) {
-      const nav = document.getElementById('main-nav');
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', !expanded);
-      nav.classList.toggle('open');
-    }
-
-    /* ── Active nav link on scroll ── */
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.navbar__nav a');
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          navLinks.forEach(l => l.classList.remove('active'));
-          const active = document.querySelector(`.navbar__nav a[href="#${e.target.id}"]`);
-          if (active) active.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-40% 0px -55% 0px' });
-
-    sections.forEach(s => io.observe(s));
-
-    /* ── Scroll Reveal ── */
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          revealObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-    /* ── Water meter animation ── */
-    const meterObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const fill = e.target.querySelector('.water-meter__fill');
-          if (fill) {
-            setTimeout(() => {
-              fill.style.width = fill.dataset.width;
-            }, 200);
-          }
-          meterObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    document.querySelectorAll('.water-meter').forEach(el => meterObserver.observe(el));
-
-    /* ── Counter animation ── */
-    function animateCounter(el, target, suffix = '') {
-      let start = 0;
-      const duration = 1800;
-      const step = (timestamp) => {
-        if (!start) start = timestamp;
-        const progress = Math.min((timestamp - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.floor(eased * target);
-        el.textContent = current.toLocaleString('pt-BR') + suffix;
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    }
-
-    /* ── Quiz ── */
-    const questions = [
-      {
-        q: "Qual percentual da água doce utilizada no Brasil é destinada ao agronegócio?",
-        opts: ["A) 35%", "B) 52%", "C) 72%", "D) 88%"],
-        ans: 2,
-        exp: "✅ Correto! O agronegócio consome 72% de toda a água doce captada no Brasil, principalmente para irrigação agrícola."
-      },
-      {
-        q: "Qual alimento tem a maior pegada hídrica por quilograma produzido?",
-        opts: ["A) Arroz irrigado", "B) Carne bovina", "C) Soja", "D) Cana-de-açúcar"],
-        ans: 1,
-        exp: "✅ A carne bovina precisa de cerca de 15.400 litros de água por kg — incluindo a água para cultivar a pastagem ao longo de anos."
-      },
-      {
-        q: "Qual técnica de irrigação usa menos água e entrega direto à raiz da planta?",
-        opts: ["A) Aspersão convencional", "B) Sulco por gravidade", "C) Pivot central", "D) Gotejamento"],
-        ans: 3,
-        exp: "✅ O gotejamento entrega água diretamente à zona radicular, reduzindo perdas por evaporação em até 50% comparado à aspersão."
-      },
-      {
-        q: "A Lei das Águas (Lei 9.433), marco fundamental da gestão hídrica brasileira, foi criada em:",
-        opts: ["A) 1988", "B) 1997", "C) 2003", "D) 2010"],
-        ans: 1,
-        exp: "✅ A Lei 9.433/1997 institui a Política Nacional de Recursos Hídricos, criando instrumentos como outorga, cobrança e comitês de bacia."
-      },
-      {
-        q: "Os 'rios voadores' amazônicos são importantes para a agricultura brasileira porque:",
-        opts: [
-          "A) Transportam sedimentos fertilizantes",
-          "B) Levam umidade que gera chuva nas regiões agrícolas",
-          "C) Fazem recargas de aquíferos subterrâneos",
-          "D) Controlam pragas e doenças das lavouras"
-        ],
-        ans: 1,
-        exp: "✅ Os rios voadores são correntes de umidade no ar geradas pela Amazônia que transportam chuva para o Centro-Sul, irrigando as principais regiões agrícolas do Brasil."
-      }
-    ];
-
-    let currentQ = 0, score = 0, answered = false;
-
-    function renderQuestion() {
-      answered = false;
-      const q = questions[currentQ];
-      document.getElementById('quiz-q-text').textContent = `${currentQ + 1}. ${q.q}`;
-      const container = document.getElementById('quiz-options');
-      container.innerHTML = '';
-      const letters = ['A','B','C','D'];
-      q.opts.forEach((opt, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'quiz-opt';
-        btn.innerHTML = `<span class="quiz-letter">${letters[i]}</span> ${opt.replace(/^[ABCD]\) /,'')}`;
-        btn.setAttribute('aria-label', `Opção ${letters[i]}: ${opt.replace(/^[ABCD]\) /,'')}`);
-        btn.onclick = () => selectAnswer(i, btn);
-        container.appendChild(btn);
-      });
-      document.getElementById('quiz-feedback').classList.remove('show');
-      document.getElementById('quiz-feedback').textContent = '';
-      document.getElementById('quiz-next').style.display = 'none';
-      updatePips();
-      // Update progressbar
-      const pb = document.getElementById('quiz-progress');
-      pb.setAttribute('aria-valuenow', currentQ);
-    }
-
-    function selectAnswer(idx, btn) {
-      if (answered) return;
-      answered = true;
-      const q = questions[currentQ];
-      const opts = document.querySelectorAll('.quiz-opt');
-      opts.forEach(o => o.disabled = true);
-
-      if (idx === q.ans) {
-        btn.classList.add('selected-correct');
-        score++;
-        document.getElementById('quiz-feedback').innerHTML = `<strong style="color:var(--clr-primary)">Muito bem! 🎉</strong> ${q.exp}`;
-      } else {
-        btn.classList.add('selected-wrong');
-        opts[q.ans].classList.add('reveal-correct');
-        document.getElementById('quiz-feedback').innerHTML = `<strong style="color:#ef4444">Não foi dessa vez.</strong> ${q.exp}`;
-      }
-
-      document.getElementById('quiz-feedback').classList.add('show');
-      const nextBtn = document.getElementById('quiz-next');
-      nextBtn.textContent = currentQ < questions.length - 1 ? 'Próxima →' : 'Ver resultado';
-      nextBtn.style.display = 'inline-flex';
-      nextBtn.focus();
-    }
-
-    function nextQuestion() {
-      currentQ++;
-      if (currentQ >= questions.length) {
-        showScore();
-      } else {
-        renderQuestion();
-      }
-    }
-
-    function showScore() {
-      document.getElementById('quiz-question-area').style.display = 'none';
-      const scoreEl = document.getElementById('quiz-score');
-      scoreEl.classList.add('show');
-      document.getElementById('score-num').textContent = score;
-      const msgs = [
-        'Continue estudando! A gestão hídrica é fundamental para o futuro do campo. 🌱',
-        'Bom começo! Você já sabe bastante sobre água no agro! 💧',
-        'Excelente! Você é um verdadeiro especialista em gestão hídrica! 🏆'
-      ];
-      document.getElementById('score-msg').textContent = score <= 1 ? msgs[0] : score <= 3 ? msgs[1] : msgs[2];
-      updatePips();
-      scoreEl.focus();
-    }
-
-    function restartQuiz() {
-      currentQ = 0; score = 0; answered = false;
-      document.getElementById('quiz-question-area').style.display = 'block';
-      document.getElementById('quiz-score').classList.remove('show');
-      renderQuestion();
-    }
-
-    function updatePips() {
-      questions.forEach((_, i) => {
-        const pip = document.getElementById(`pip-${i}`);
-        if (!pip) return;
-        pip.className = 'quiz-pip';
-        if (i < currentQ) pip.classList.add('done');
-        else if (i === currentQ) pip.classList.add('current');
-      });
-    }
-
-    // Init quiz on load
-    renderQuestion();
-
-    /* ── Keyboard: close mobile nav on Escape ── */
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        const nav = document.getElementById('main-nav');
-        const btn = document.querySelector('.nav-toggle');
-        if (nav.classList.contains('open')) {
-          nav.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-          btn.focus();
-        }
-      }
+    /* ── Navbar scroll ── */
+    const nb = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nb.classList.toggle('nb-scrolled', window.scrollY > 60);
     });
 
-    /* ── Respect OS reduce-motion preference ── */
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.body.classList.add('reduce-motion');
-      document.getElementById('btn-motion').setAttribute('aria-pressed','true');
-    }
+    /* ── Hamburger ── */
+    const hb = document.getElementById('hamburger');
+    const nl = document.querySelector('.nav-links');
+    hb.addEventListener('click', () => {
+      nl.classList.toggle('open');
+      hb.classList.toggle('open');
+    });
 
-    /* ── Respect OS contrast preference ── */
-    if (window.matchMedia('(prefers-contrast: more)').matches) {
-      document.body.classList.add('high-contrast');
-      document.getElementById('btn-contrast').setAttribute('aria-pressed','true');
-    }
+    /* ── Hero counter ── */
+    (function () {
+      const el = document.getElementById('heroVal');
+      const target = 70, dur = 2000;
+      let t0 = null;
+      const ease = p => 1 - Math.pow(1 - p, 3);
+      setTimeout(() => {
+        function frame(ts) {
+          if (!t0) t0 = ts;
+          const p = Math.min((ts - t0) / dur, 1);
+          el.textContent = Math.round(ease(p) * target);
+          if (p < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }, 500);
+    })();
+
+    /* ── IntersectionObserver ── */
+    const C = 2 * Math.PI * 40; // ≈ 251.33
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        el.classList.add('visible');
+
+        /* counters */
+        el.querySelectorAll('.cnt').forEach(c => {
+          const tgt = parseInt(c.dataset.to, 10);
+          const dur = 1800; let t0 = null;
+          const ease = p => 1 - Math.pow(1 - p, 3);
+          function frame(ts) {
+            if (!t0) t0 = ts;
+            const p = Math.min((ts - t0) / dur, 1);
+            c.textContent = Math.round(ease(p) * tgt);
+            if (p < 1) requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+        });
+
+        /* bars */
+        el.querySelectorAll('.bar').forEach(b => {
+          b.style.width = b.dataset.w + '%';
+        });
+
+        /* rings */
+        el.querySelectorAll('.ring-wrap').forEach(rw => {
+          const pct = parseInt(rw.dataset.pct, 10);
+          const fg = rw.querySelector('.ring-fg');
+          if (fg) setTimeout(() => {
+            fg.style.strokeDasharray = (pct / 100 * C) + ' ' + C;
+          }, 120);
+        });
+
+        io.unobserve(el);
+      });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   </script>
 </body>
 </html>
